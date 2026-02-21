@@ -125,6 +125,10 @@
       overflow: hidden;
       mask-image: linear-gradient(to right, transparent 0%, black 3%, black 97%, transparent 100%);
       -webkit-mask-image: linear-gradient(to right, transparent 0%, black 3%, black 97%, transparent 100%);
+      /* Promote wrapper to GPU layer immediately so the child animation
+         is never lazily deferred on iOS Safari first paint */
+      -webkit-transform: translateZ(0);
+      transform: translateZ(0);
     }
 
     .carousel-track {
@@ -133,7 +137,6 @@
       gap: 20px;
       animation: scroll-left 100s linear infinite;
       width: max-content;
-      will-change: transform;
       backface-visibility: hidden;
       -webkit-backface-visibility: hidden;
     }
@@ -161,8 +164,8 @@
     .c-standard   { width: 300px; height: 240px; transform: rotate(0.4deg); }
 
     @keyframes scroll-left {
-      0% { transform: translateX(0); }
-      100% { transform: translateX(-50%); }
+      0%   { transform: translateX(0) translateZ(0); }
+      100% { transform: translateX(-50%) translateZ(0); }
     }
 
     /* ─── CAROUSEL FADE (mobile only) ─── */
