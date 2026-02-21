@@ -377,6 +377,13 @@
 
     /* ─── RESPONSIVE ─── */
     @media (max-width: 768px) {
+      /* Sketch needs extra width to absorb max parallax translation (300 × 0.32 = 96px).
+         Extend 120px beyond each side so the edge is never exposed at full scroll. */
+      .course-sketch {
+        left: -120px;
+        right: auto;
+        width: calc(100% + 240px);
+      }
       html, body { overflow: hidden; overscroll-behavior: none; }
       .navbar { width: calc(100% - 24px); top: 12px; padding: 10px 10px 10px 14px; }
       .navbar-name { font-size: 0.9rem; }
