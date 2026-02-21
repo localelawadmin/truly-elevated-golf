@@ -201,6 +201,16 @@
       z-index: 3;
     }
 
+    .hero-content::before {
+      content: '';
+      position: absolute;
+      top: -120px;
+      left: 0; right: 0;
+      height: 120px;
+      background: linear-gradient(to bottom, transparent, var(--dark-bg));
+      pointer-events: none;
+    }
+
     .hero-badge {
       font-family: 'Inter Tight', sans-serif;
       font-weight: 500;
@@ -243,9 +253,14 @@
       to { opacity: 1; transform: translateY(0); }
     }
 
+    /* ─── SCROLL HINT ─── */
+    .scroll-hint {
+      display: none;
+    }
+
     /* ─── RESPONSIVE ─── */
     @media (max-width: 768px) {
-      html, body { overflow-y: auto; overflow-x: hidden; }
+      html, body { overflow: hidden; }
       .navbar { width: calc(100% - 24px); top: 12px; padding: 10px 10px 10px 14px; }
       .navbar-name { font-size: 0.9rem; }
       .navbar-logo svg { width: 24px; }
@@ -261,7 +276,6 @@
         z-index: 1;
         flex-shrink: 0;
       }
-      .page { height: auto; min-height: 100vh; padding-bottom: 80px; }
       .wordmark { font-size: 44vw; padding-left: 24px; margin-top: -0.28em; z-index: 2; }
       .hero-content {
         background: var(--dark-bg);
@@ -270,14 +284,8 @@
         padding: 0 24px 32px;
       }
       .hero-content::before {
-        content: '';
-        position: absolute;
         top: -100px;
-        left: 0; right: 0;
         height: 100px;
-        background: linear-gradient(to bottom, transparent, var(--dark-bg));
-        pointer-events: none;
-        z-index: 0;
       }
       .c-landscape  { width: 240px; height: 170px; }
       .c-portrait   { width: 160px; height: 220px; }
@@ -286,6 +294,24 @@
       .c-tall       { width: 150px; height: 210px; }
       .c-standard   { width: 220px; height: 170px; }
       .hero-headline { font-size: 1.8rem; max-width: 100%; }
+      .scroll-hint {
+        display: block;
+        position: fixed;
+        bottom: 28px;
+        right: 14px;
+        z-index: 50;
+        font-family: 'Inter Tight', sans-serif;
+        font-size: 0.52rem;
+        letter-spacing: 0.28em;
+        color: rgba(255, 255, 255, 0.28);
+        text-transform: uppercase;
+        transform: rotate(-90deg);
+        transform-origin: right bottom;
+        pointer-events: none;
+        user-select: none;
+        transition: opacity 0.6s ease;
+      }
+      .scroll-hint.hidden { opacity: 0; }
     }
 
     @media (max-width: 480px) {
@@ -333,6 +359,8 @@
 
   </div>
 
+  <div class="scroll-hint" id="scrollHint" aria-hidden="true">Scroll</div>
+
   <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
     const imageData = [
       { src: 'images/DSC00098.JPG',  cls: 'c-landscape' },
@@ -367,19 +395,53 @@
       track.appendChild(item);
     });
 
-    // Lateral parallax on mobile
+    // Virtual-scroll lateral parallax (mobile only — no real page scroll)
     (function() {
-      var wm = document.getElementById('wordmarkEl');
+      var wm   = document.getElementById('wordmarkEl');
+      var hint = document.getElementById('scrollHint');
+      var virtualY  = 0;
+      var maxY      = 240;   // max virtual scroll distance
+      var hintGone  = false;
+      var touchY    = 0;
+
       function applyParallax() {
         if (!wm) return;
         if (window.innerWidth <= 768) {
-          var shift = window.scrollY * -0.75;
-          wm.style.transform = 'translateX(' + shift + 'px)';
+          wm.style.transform = 'translateX(' + (virtualY * -0.85) + 'px)';
         } else {
           wm.style.transform = '';
         }
       }
-      window.addEventListener('scroll', applyParallax, { passive: true });
+
+      function hideHint() {
+        if (!hintGone && hint) {
+          hint.classList.add('hidden');
+          hintGone = true;
+        }
+      }
+
+      // Touch
+      document.addEventListener('touchstart', function(e) {
+        touchY = e.touches[0].clientY;
+      }, { passive: true });
+
+      document.addEventListener('touchmove', function(e) {
+        if (window.innerWidth > 768) return;
+        var delta = touchY - e.touches[0].clientY;
+        touchY = e.touches[0].clientY;
+        virtualY = Math.max(0, Math.min(maxY, virtualY + delta));
+        applyParallax();
+        hideHint();
+      }, { passive: true });
+
+      // Mouse wheel (desktop preview / simulator)
+      document.addEventListener('wheel', function(e) {
+        if (window.innerWidth > 768) return;
+        virtualY = Math.max(0, Math.min(maxY, virtualY + e.deltaY * 0.5));
+        applyParallax();
+        hideHint();
+      }, { passive: true });
+
       window.addEventListener('resize', applyParallax, { passive: true });
     })();
   </script>
