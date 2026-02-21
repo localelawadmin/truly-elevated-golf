@@ -199,16 +199,22 @@
       flex-shrink: 0;
       position: relative;
       z-index: 3;
+      background: var(--dark-bg);
     }
 
     .hero-content::before {
       content: '';
       position: absolute;
-      top: -120px;
+      top: -100px;
       left: 0; right: 0;
-      height: 120px;
-      background: linear-gradient(to bottom, transparent, var(--dark-bg));
+      height: 100px;
+      background: linear-gradient(to bottom, transparent 0%, transparent 25%, var(--dark-bg) 100%);
       pointer-events: none;
+    }
+
+    /* ─── VIEWPORT EDGE FADE ─── */
+    .viewport-edge-fade {
+      display: none;
     }
 
     .hero-badge {
@@ -265,6 +271,8 @@
       .navbar-name { font-size: 0.9rem; }
       .navbar-logo svg { width: 24px; }
       .navbar-contact { padding: 7px 18px; font-size: 0.64rem; }
+      /* Reserve space at bottom for fixed hero bar */
+      .page { padding-bottom: 200px; }
       .carousel-zone { padding-top: 68px; padding-bottom: 0; }
       .carousel-fade {
         display: block;
@@ -277,15 +285,20 @@
         flex-shrink: 0;
       }
       .wordmark { font-size: 44vw; padding-left: 24px; margin-top: -0.28em; z-index: 2; }
+      /* Hero text anchored to bottom of visible screen */
       .hero-content {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
         background: var(--dark-bg);
-        position: relative;
-        z-index: 3;
-        padding: 0 24px 32px;
+        z-index: 10;
+        padding: 0 24px 36px;
       }
       .hero-content::before {
-        top: -100px;
-        height: 100px;
+        top: -80px;
+        height: 80px;
+        background: linear-gradient(to bottom, transparent 0%, var(--dark-bg) 100%);
       }
       .c-landscape  { width: 240px; height: 170px; }
       .c-portrait   { width: 160px; height: 220px; }
@@ -294,12 +307,25 @@
       .c-tall       { width: 150px; height: 210px; }
       .c-standard   { width: 220px; height: 170px; }
       .hero-headline { font-size: 1.8rem; max-width: 100%; }
+      /* Right-edge fade so Experience sweeps gracefully off screen */
+      .viewport-edge-fade {
+        display: block;
+        position: fixed;
+        top: 0;
+        right: 0;
+        width: 80px;
+        height: 100%;
+        background: linear-gradient(to right, transparent, var(--dark-bg));
+        pointer-events: none;
+        z-index: 5;
+      }
+      /* SCROLL hint — sits above the fixed hero bar */
       .scroll-hint {
         display: block;
         position: fixed;
-        bottom: 28px;
+        bottom: 220px;
         right: 14px;
-        z-index: 50;
+        z-index: 15;
         font-family: 'Inter Tight', sans-serif;
         font-size: 0.52rem;
         letter-spacing: 0.28em;
@@ -359,6 +385,7 @@
 
   </div>
 
+  <div class="viewport-edge-fade" aria-hidden="true"></div>
   <div class="scroll-hint" id="scrollHint" aria-hidden="true">Scroll</div>
 
   <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
