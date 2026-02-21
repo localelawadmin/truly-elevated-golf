@@ -275,6 +275,20 @@
     }
     .navbar.gl-near::after { opacity: 1; }
 
+    /* ─── NAVBAR JIGGLE ─── */
+    @keyframes navbar-jiggle {
+      0%   { transform: translateX(-50%) scale(1, 1); }
+      20%  { transform: translateX(-50%) scale(1.012, 1.042); }
+      38%  { transform: translateX(-50%) scale(0.997, 0.963); }
+      56%  { transform: translateX(-50%) scale(1.005, 1.018); }
+      72%  { transform: translateX(-50%) scale(0.999, 0.991); }
+      86%  { transform: translateX(-50%) scale(1.002, 1.005); }
+      100% { transform: translateX(-50%) scale(1, 1); }
+    }
+    .navbar.gl-jiggle {
+      animation: navbar-jiggle 0.48s linear both;
+    }
+
     /* ─── LIQUID GLASS CURSOR (desktop / mouse only) ─── */
     @media (hover: hover) and (pointer: fine) {
       * { cursor: none !important; }
@@ -290,29 +304,34 @@
         will-change: transform;
         transition: opacity 0.3s ease;
 
-        backdrop-filter: blur(5px) brightness(1.1) saturate(1.5);
-        -webkit-backdrop-filter: blur(5px) brightness(1.1) saturate(1.5);
+        backdrop-filter: blur(2px) brightness(1.05) saturate(1.2);
+        -webkit-backdrop-filter: blur(2px) brightness(1.05) saturate(1.2);
         background:
-          radial-gradient(ellipse at 33% 30%, rgba(255,255,255,0.28) 0%, rgba(255,255,255,0) 58%),
-          rgba(255,255,255,0.03);
-        border: 1px solid rgba(255,255,255,0.5);
+          radial-gradient(ellipse at 32% 28%, rgba(255,255,255,0.55) 0%, rgba(255,255,255,0) 52%),
+          radial-gradient(ellipse at 72% 22%, rgba(255,255,255,0.18) 0%, rgba(255,255,255,0) 38%),
+          rgba(255,255,255,0.04);
+        border: 1px solid rgba(255,255,255,0.65);
         box-shadow:
-          inset 0 1px 0 rgba(255,255,255,0.55),
-          inset 0 -1px 0 rgba(0,0,0,0.08),
-          0 2px 12px rgba(0,0,0,0.18),
-          0 0 0 0.5px rgba(0,0,0,0.06);
+          inset 0 1px 0 rgba(255,255,255,0.75),
+          inset 0 -1px 0 rgba(0,0,0,0.06),
+          inset 0 0 0 0.5px rgba(255,255,255,0.12),
+          0 2px 14px rgba(0,0,0,0.2),
+          0 0 0 0.5px rgba(0,0,0,0.05);
       }
 
       .gl-cursor.gl-hover {
-        backdrop-filter: blur(8px) brightness(1.18) saturate(1.8);
-        -webkit-backdrop-filter: blur(8px) brightness(1.18) saturate(1.8);
+        backdrop-filter: blur(4px) brightness(1.1) saturate(1.5);
+        -webkit-backdrop-filter: blur(4px) brightness(1.1) saturate(1.5);
         background:
-          radial-gradient(ellipse at 33% 30%, rgba(255,255,255,0.4) 0%, rgba(255,255,255,0) 58%),
-          rgba(255,255,255,0.07);
+          radial-gradient(ellipse at 32% 28%, rgba(255,255,255,0.65) 0%, rgba(255,255,255,0) 52%),
+          radial-gradient(ellipse at 72% 22%, rgba(255,255,255,0.25) 0%, rgba(255,255,255,0) 38%),
+          rgba(255,255,255,0.08);
+        border: 1px solid rgba(255,255,255,0.78);
         box-shadow:
-          inset 0 1px 0 rgba(255,255,255,0.7),
-          inset 0 -1px 0 rgba(0,0,0,0.06),
-          0 4px 18px rgba(0,0,0,0.22),
+          inset 0 1px 0 rgba(255,255,255,0.88),
+          inset 0 -1px 0 rgba(0,0,0,0.05),
+          inset 0 0 0 0.5px rgba(255,255,255,0.18),
+          0 4px 20px rgba(0,0,0,0.24),
           0 0 0 0.5px rgba(0,0,0,0.04);
       }
     }
@@ -542,7 +561,7 @@
       window.addEventListener('resize', applyParallax, { passive: true });
     })();
 
-    // ─── Liquid glass cursor + navbar spotlight (desktop mouse only) ───
+    // ─── Liquid glass cursor + navbar spotlight + jiggle (desktop mouse only) ───
     (function() {
       if (!window.matchMedia('(hover: hover) and (pointer: fine)').matches) return;
       var cur = document.getElementById('glCursor');
@@ -550,17 +569,40 @@
       if (!cur) return;
 
       var tx = -100, ty = -100, cx = -100, cy = -100;
+      var wasNear = false;
+
+      // Remove jiggle class when animation finishes so it can re-trigger
+      if (nav) {
+        nav.addEventListener('animationend', function() {
+          nav.classList.remove('gl-jiggle');
+        });
+      }
+
+      function triggerJiggle() {
+        if (!nav) return;
+        nav.classList.remove('gl-jiggle');
+        void nav.offsetWidth; // force reflow to restart animation
+        nav.classList.add('gl-jiggle');
+      }
 
       document.addEventListener('mousemove', function(e) {
         tx = e.clientX;
         ty = e.clientY;
 
-        // Navbar proximity spotlight
+        // Navbar proximity spotlight + jiggle
         if (nav) {
           var r = nav.getBoundingClientRect();
           var vy = e.clientY < r.top ? r.top - e.clientY : e.clientY > r.bottom ? e.clientY - r.bottom : 0;
           var inH = e.clientX > r.left - 60 && e.clientX < r.right + 60;
-          if (vy < 110 && inH) {
+          var isNear = vy < 110 && inH;
+
+          // Jiggle on state change (enter AND exit)
+          if (isNear !== wasNear) {
+            triggerJiggle();
+            wasNear = isNear;
+          }
+
+          if (isNear) {
             nav.classList.add('gl-near');
             nav.style.setProperty('--nx', ((e.clientX - r.left) / r.width * 100).toFixed(1) + '%');
           } else {
