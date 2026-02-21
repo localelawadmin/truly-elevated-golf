@@ -133,6 +133,9 @@
       gap: 20px;
       animation: scroll-left 100s linear infinite;
       width: max-content;
+      will-change: transform;
+      backface-visibility: hidden;
+      -webkit-backface-visibility: hidden;
     }
 
     .carousel-item {
@@ -266,7 +269,7 @@
 
     /* ─── RESPONSIVE ─── */
     @media (max-width: 768px) {
-      html, body { overflow: hidden; }
+      html, body { overflow: hidden; overscroll-behavior: none; }
       .navbar { width: calc(100% - 24px); top: 12px; padding: 10px 10px 10px 14px; }
       .navbar-name { font-size: 0.9rem; }
       .navbar-logo svg { width: 24px; }
