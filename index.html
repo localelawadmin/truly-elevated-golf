@@ -300,4 +300,10 @@
       item.className = `carousel-item ${cls}`;
       const img = document.createElement('img');
       img.src = src;
-  
+      img.alt = '';
+      item.appendChild(img);
+      track.appendChild(item);
+    });
+  </script>
+</body>
+</html>
