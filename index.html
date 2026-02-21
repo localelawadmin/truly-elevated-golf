@@ -230,6 +230,7 @@
       filter: invert(1) sepia(0.45) hue-rotate(115deg) saturate(0.5) brightness(0.72);
       mix-blend-mode: screen;
       opacity: 0.22;
+      will-change: transform;
       /* mobile: fade only at the bottom near text */
       -webkit-mask-image: linear-gradient(to top, transparent 0%, black 22%, black 100%);
       mask-image: linear-gradient(to top, transparent 0%, black 22%, black 100%);
@@ -548,8 +549,9 @@
 
     // Virtual-scroll lateral parallax (mobile only — no real page scroll)
     (function() {
-      var wm   = document.getElementById('wordmarkEl');
-      var hint = document.getElementById('scrollHint');
+      var wm     = document.getElementById('wordmarkEl');
+      var sketch = document.querySelector('.course-sketch');
+      var hint   = document.getElementById('scrollHint');
       var virtualY  = 0;
       var maxY      = 300;   // max virtual scroll distance
       var hintGone  = false;
@@ -558,9 +560,13 @@
       function applyParallax() {
         if (!wm) return;
         if (window.innerWidth <= 768) {
+          // wordmark: faster (closer layer)
           wm.style.transform = 'translateX(' + (virtualY * -0.85) + 'px)';
+          // sketch: slower (deeper background layer)
+          if (sketch) sketch.style.transform = 'translateX(' + (virtualY * -0.32) + 'px)';
         } else {
           wm.style.transform = '';
+          if (sketch) sketch.style.transform = '';
         }
       }
 
