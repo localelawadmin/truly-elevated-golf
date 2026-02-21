@@ -310,8 +310,8 @@
       .gl-cursor {
         position: fixed;
         top: 0; left: 0;
-        width: 34px; height: 34px;
-        margin: -17px 0 0 -17px;
+        width: 28px; height: 28px;
+        margin: -14px 0 0 -14px;
         border-radius: 50%;
         pointer-events: none;
         z-index: 999998;
@@ -333,6 +333,23 @@
           inset 0 -0.5px 0 rgba(0,0,0,0.04),
           0 1px 10px rgba(0,0,0,0.12),
           0 0 0 0.5px rgba(0,0,0,0.04);
+      }
+
+      /* Golf ball dimple texture — offset shadow+rim to match top-left light source */
+      .gl-cursor::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        border-radius: 50%;
+        pointer-events: none;
+        background:
+          radial-gradient(circle at 38% 38%,
+            rgba(0,0,0,0.18) 0px,
+            rgba(0,0,0,0.18) 1.1px,
+            rgba(255,255,255,0.11) 1.1px,
+            rgba(255,255,255,0.11) 1.9px,
+            transparent 1.9px)
+          0 0 / 5px 5px;
       }
 
       .gl-cursor.gl-hover {
