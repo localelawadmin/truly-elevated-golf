@@ -260,30 +260,24 @@
       to { opacity: 1; transform: translateY(0); }
     }
 
-    /* ─── NAVBAR BEHIND-GLOW (cursor on navbar) ─── */
-    .navbar {
-      transition: box-shadow 0.45s ease;
+    /* ─── NAVBAR BEHIND-GLOW: localized circle that follows cursor ─── */
+    .navbar::after {
+      content: '';
+      position: absolute;
+      inset: -20px;
+      border-radius: 120px;
+      z-index: -1;
+      pointer-events: none;
+      background: radial-gradient(
+        circle 52px at var(--nx, 50%) 50%,
+        rgba(200, 225, 210, 0.55) 0%,
+        transparent 100%
+      );
+      filter: blur(18px);
+      opacity: 0;
+      transition: opacity 0.3s ease;
     }
-    .navbar.gl-on {
-      box-shadow:
-        0 0 55px 12px rgba(190, 220, 205, 0.22),
-        0 0 22px 4px rgba(255, 255, 255, 0.12),
-        inset 0 0 0 1px rgba(255, 255, 255, 0.11);
-    }
-
-    /* ─── NAVBAR JIGGLE ─── */
-    @keyframes navbar-jiggle {
-      0%   { transform: translateX(-50%) scale(1, 1); }
-      20%  { transform: translateX(-50%) scale(1.012, 1.042); }
-      38%  { transform: translateX(-50%) scale(0.997, 0.963); }
-      56%  { transform: translateX(-50%) scale(1.005, 1.018); }
-      72%  { transform: translateX(-50%) scale(0.999, 0.991); }
-      86%  { transform: translateX(-50%) scale(1.002, 1.005); }
-      100% { transform: translateX(-50%) scale(1, 1); }
-    }
-    .navbar.gl-jiggle {
-      animation: navbar-jiggle 0.48s linear both;
-    }
+    .navbar.gl-on::after { opacity: 1; }
 
     /* ─── LIQUID GLASS CURSOR (desktop / mouse only) ─── */
     @media (hover: hover) and (pointer: fine) {
@@ -559,7 +553,7 @@
       window.addEventListener('resize', applyParallax, { passive: true });
     })();
 
-    // ─── Liquid glass cursor + navbar spotlight + jiggle (desktop mouse only) ───
+    // ─── Liquid glass cursor + navbar behind-glow (desktop mouse only) ───
     (function() {
       if (!window.matchMedia('(hover: hover) and (pointer: fine)').matches) return;
       var cur = document.getElementById('glCursor');
@@ -567,52 +561,26 @@
       if (!cur) return;
 
       var tx = -100, ty = -100, cx = -100, cy = -100;
-      var wasNear = false;
-
-      // Remove jiggle class when animation finishes so it can re-trigger
-      if (nav) {
-        nav.addEventListener('animationend', function() {
-          nav.classList.remove('gl-jiggle');
-        });
-      }
-
-      function triggerJiggle() {
-        if (!nav) return;
-        nav.classList.remove('gl-jiggle');
-        void nav.offsetWidth; // force reflow to restart animation
-        nav.classList.add('gl-jiggle');
-      }
 
       document.addEventListener('mousemove', function(e) {
         tx = e.clientX;
         ty = e.clientY;
 
-        // Navbar proximity jiggle + behind-glow
+        // Navbar: localized behind-glow tracks cursor when on the navbar
         if (nav) {
           var r = nav.getBoundingClientRect();
-          var vy = e.clientY < r.top ? r.top - e.clientY : e.clientY > r.bottom ? e.clientY - r.bottom : 0;
-          var inH = e.clientX > r.left - 60 && e.clientX < r.right + 60;
-          var isNear = vy < 110 && inH;
-
-          // gl-on: cursor is directly on/inside the navbar
           var isOn = e.clientX >= r.left && e.clientX <= r.right &&
                      e.clientY >= r.top  && e.clientY <= r.bottom;
-          if (isOn) { nav.classList.add('gl-on'); } else { nav.classList.remove('gl-on'); }
-
-          // Jiggle fires on proximity threshold crossing (enter AND exit)
-          if (isNear !== wasNear) {
-            triggerJiggle();
-            wasNear = isNear;
-          }
-
-          if (isNear) {
-            nav.classList.add('gl-near');
+          if (isOn) {
+            nav.classList.add('gl-on');
+            // --nx is relative to the ::after element (inset: -20px wider on each side)
+            nav.style.setProperty('--nx', ((e.clientX - (r.left - 20)) / (r.width + 40) * 100).toFixed(1) + '%');
           } else {
-            nav.classList.remove('gl-near');
+            nav.classList.remove('gl-on');
           }
         }
 
-        // Enlarge on hover over clickable elements
+        // Lens state on clickable elements
         var el = document.elementFromPoint(e.clientX, e.clientY);
         cur.classList.toggle('gl-hover', !!(el && el.closest('a, button, [role="button"]')));
       });
