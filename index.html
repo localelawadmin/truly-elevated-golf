@@ -261,15 +261,30 @@
         z-index: 1;
         flex-shrink: 0;
       }
-      .hero-content { background: var(--dark-bg); position: relative; z-index: 3; }
-      .wordmark { font-size: 44vw; padding-left: 24px; margin-top: -0.28em; z-index: 2; animation: wordmark-drift 5s ease-in-out infinite; }
+      .page { height: auto; min-height: 100vh; padding-bottom: 80px; }
+      .wordmark { font-size: 44vw; padding-left: 24px; margin-top: -0.28em; z-index: 2; }
+      .hero-content {
+        background: var(--dark-bg);
+        position: relative;
+        z-index: 3;
+        padding: 0 24px 32px;
+      }
+      .hero-content::before {
+        content: '';
+        position: absolute;
+        top: -100px;
+        left: 0; right: 0;
+        height: 100px;
+        background: linear-gradient(to bottom, transparent, var(--dark-bg));
+        pointer-events: none;
+        z-index: 0;
+      }
       .c-landscape  { width: 240px; height: 170px; }
       .c-portrait   { width: 160px; height: 220px; }
       .c-square     { width: 190px; height: 190px; }
       .c-wide       { width: 270px; height: 160px; }
       .c-tall       { width: 150px; height: 210px; }
       .c-standard   { width: 220px; height: 170px; }
-      .hero-content { padding: 0 24px 32px; }
       .hero-headline { font-size: 1.8rem; max-width: 100%; }
     }
 
@@ -308,7 +323,7 @@
 
     <div class="carousel-fade"></div>
 
-    <div class="wordmark" aria-hidden="true">Experience</div>
+    <div class="wordmark" id="wordmarkEl" aria-hidden="true">Experience</div>
 
     <div class="hero-content">
       <h1 class="hero-headline">The invisible layer between your facility and your reputation.</h1>
@@ -352,6 +367,21 @@
       track.appendChild(item);
     });
 
+    // Lateral parallax on mobile
+    (function() {
+      var wm = document.getElementById('wordmarkEl');
+      function applyParallax() {
+        if (!wm) return;
+        if (window.innerWidth <= 768) {
+          var shift = window.scrollY * -0.75;
+          wm.style.transform = 'translateX(' + shift + 'px)';
+        } else {
+          wm.style.transform = '';
+        }
+      }
+      window.addEventListener('scroll', applyParallax, { passive: true });
+      window.addEventListener('resize', applyParallax, { passive: true });
+    })();
   </script>
 </body>
 </html>
