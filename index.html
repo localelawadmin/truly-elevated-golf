@@ -339,31 +339,31 @@
       .course-sketch {
         display: block;
         position: absolute;
-        /* anchored to top-right of hero-content, extends upward into gradient zone */
-        top: -170px;
-        right: -10px;
+        /* full page height, anchored right */
+        top: 0;
+        right: 0;
         width: 62%;
-        max-width: 820px;
-        height: 310px;
+        max-width: 860px;
+        height: 100%;
         pointer-events: none;
-        z-index: 0;
+        z-index: 1;
         /* JPEG is black ink on white: invert → white lines on black,
            then tint to the site's aqua/mint palette */
         background-image: url('images/course-sketch.jpg');
         background-size: cover;
-        background-position: center 40%;
+        background-position: center center;
         filter: invert(1) sepia(0.45) hue-rotate(115deg) saturate(0.5) brightness(0.72);
         /* screen blend: the black bg drops away, only tinted lines add to the dark bg */
         mix-blend-mode: screen;
         opacity: 0.26;
-        /* fade: left edge bleeds to transparent, bottom dissolves into hero bg */
+        /* fade left edge in, fade bottom out near the text */
         -webkit-mask-image:
-          linear-gradient(to right, transparent 0%, black 22%, black 100%),
-          linear-gradient(to top,   transparent 0%, black 30%, black 100%);
+          linear-gradient(to right, transparent 0%, black 18%, black 100%),
+          linear-gradient(to top,   transparent 0%, black 22%, black 100%);
         -webkit-mask-composite: source-in;
         mask-image:
-          linear-gradient(to right, transparent 0%, black 22%, black 100%),
-          linear-gradient(to top,   transparent 0%, black 30%, black 100%);
+          linear-gradient(to right, transparent 0%, black 18%, black 100%),
+          linear-gradient(to top,   transparent 0%, black 22%, black 100%);
         mask-composite: intersect;
       }
     }
@@ -461,6 +461,8 @@
 
   <div class="page">
 
+    <div class="course-sketch" aria-hidden="true"></div>
+
     <nav class="navbar">
       <div class="navbar-left">
         <a href="/" class="navbar-logo">
@@ -487,7 +489,6 @@
     <div class="wordmark" id="wordmarkEl" aria-hidden="true">Experience</div>
 
     <div class="hero-content">
-      <div class="course-sketch" aria-hidden="true"></div>
       <h1 class="hero-headline">The invisible layer between your facility and your reputation.</h1>
       <p class="hero-badge">Truly Elevated Golf —<br>Experience Consultants</p>
       <p class="hero-sub">We advise golf clubs and courses on how to design unforgettable member and guest experiences at every touchpoint, in every detail.</p>
