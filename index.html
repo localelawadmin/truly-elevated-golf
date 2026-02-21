@@ -115,7 +115,8 @@
       flex: 1;
       display: flex;
       align-items: center;
-      padding-top: 76px;
+      padding-top: 96px;
+      padding-bottom: 36px;
       overflow: hidden;
     }
 
@@ -163,6 +164,11 @@
     @keyframes scroll-left {
       0% { transform: translateX(0); }
       100% { transform: translateX(-50%); }
+    }
+
+    /* ─── CAROUSEL FADE (mobile only) ─── */
+    .carousel-fade {
+      display: none;
     }
 
     /* ─── TEXT ─── */
@@ -219,7 +225,18 @@
       .navbar-name { font-size: 0.9rem; }
       .navbar-logo svg { width: 24px; }
       .navbar-contact { padding: 7px 18px; font-size: 0.64rem; }
-      .carousel-zone { padding-top: 68px; }
+      .carousel-zone { padding-top: 68px; padding-bottom: 0; }
+      .carousel-fade {
+        display: block;
+        height: 90px;
+        background: linear-gradient(to bottom, transparent, var(--dark-bg));
+        pointer-events: none;
+        margin-top: -90px;
+        position: relative;
+        z-index: 1;
+        flex-shrink: 0;
+      }
+      .hero-content { background: var(--dark-bg); position: relative; z-index: 1; }
       .c-landscape  { width: 240px; height: 170px; }
       .c-portrait   { width: 160px; height: 220px; }
       .c-square     { width: 190px; height: 190px; }
@@ -262,6 +279,8 @@
         <div class="carousel-track" id="carouselTrack"></div>
       </div>
     </div>
+
+    <div class="carousel-fade"></div>
 
     <div class="hero-content">
       <p class="hero-badge">Golf Experience Consultancy</p>
