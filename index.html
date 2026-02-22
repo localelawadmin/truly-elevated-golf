@@ -370,7 +370,7 @@
     }
 
     /* ─── COURSE SKETCH — desktop overrides ─── */
-    @media (min-width: 769px) {
+    @media (min-width: 1025px) {
       .course-sketch {
         width: 62%;
         max-width: 860px;
@@ -393,7 +393,7 @@
     }
 
     /* ─── RESPONSIVE ─── */
-    @media (max-width: 768px) {
+    @media (max-width: 1024px) {
       /* Sketch needs extra width to absorb max parallax translation (300 × 0.32 = 96px).
          Extend 120px beyond each side so the edge is never exposed at full scroll. */
       .course-sketch {
@@ -473,6 +473,19 @@
         transition: opacity 0.6s ease;
       }
       .scroll-hint.hidden { opacity: 0; }
+    }
+
+    /* ─── TABLET overrides (within mobile layout) ─── */
+    @media (min-width: 769px) and (max-width: 1024px) {
+      .wordmark { font-size: 22vw; }
+      .hero-headline { font-size: 2.4rem; }
+      .hero-sub { font-size: 1rem; }
+      .c-landscape  { width: 300px; height: 210px; }
+      .c-portrait   { width: 195px; height: 265px; }
+      .c-square     { width: 235px; height: 235px; }
+      .c-wide       { width: 335px; height: 195px; }
+      .c-tall       { width: 180px; height: 255px; }
+      .c-standard   { width: 265px; height: 210px; }
     }
 
     @media (max-width: 480px) {
@@ -583,7 +596,7 @@
 
       function applyParallax() {
         if (!wm) return;
-        if (window.innerWidth <= 768) {
+        if (window.innerWidth <= 1024) {
           // wordmark: faster (closer layer)
           wm.style.transform = 'translateX(' + (virtualY * -0.85) + 'px)';
           // sketch: slower (deeper background layer)
