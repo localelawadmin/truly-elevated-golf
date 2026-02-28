@@ -13,9 +13,9 @@
     :root {
       --dark-bg:  #111a14;
       --forest:   #1A4A2E;
-      --gold:     #C9A84C;
       --cream:    #F5F0E8;
-      --sage:     #3D6B4A;
+      --cream-dim: rgba(245, 240, 232, 0.55);
+      --cream-faint: rgba(245, 240, 232, 0.14);
     }
 
     * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -59,7 +59,7 @@
       backdrop-filter: blur(16px) saturate(1.4);
       -webkit-backdrop-filter: blur(16px) saturate(1.4);
       border-radius: 100px;
-      border: 1px solid rgba(201, 168, 76, 0.18);
+      border: 1px solid rgba(245, 240, 232, 0.1);
     }
 
     .navbar-left {
@@ -77,7 +77,7 @@
     .navbar-divider {
       width: 1px;
       height: 16px;
-      background: rgba(201, 168, 76, 0.3);
+      background: rgba(245, 240, 232, 0.2);
     }
 
     .navbar-name {
@@ -93,9 +93,9 @@
       display: inline-flex;
       align-items: center;
       padding: 9px 26px;
-      background: rgba(201, 168, 76, 0.08);
-      border: 1px solid rgba(201, 168, 76, 0.45);
-      color: var(--gold);
+      background: var(--cream-faint);
+      border: 1px solid rgba(245, 240, 232, 0.32);
+      color: var(--cream);
       border-radius: 100px;
       font-family: 'Inter Tight', sans-serif;
       font-weight: 500;
@@ -108,7 +108,7 @@
     }
 
     .navbar-contact:hover {
-      background: rgba(201, 168, 76, 0.18);
+      background: rgba(245, 240, 232, 0.1);
     }
 
     /* ─── CAROUSEL ─── */
@@ -182,7 +182,7 @@
       font-weight: 400;
       font-size: 18vw;
       line-height: 0.85;
-      color: var(--gold);
+      color: rgba(245, 240, 232, 0.22);
       opacity: 1;
       padding-left: 48px;
       margin-top: -0.32em;
@@ -228,7 +228,7 @@
       background-image: url('images/course-sketch.jpg');
       background-size: cover;
       background-position: center center;
-      filter: invert(1) sepia(0.65) hue-rotate(18deg) saturate(0.75) brightness(0.62);
+      filter: invert(1) sepia(0.5) hue-rotate(5deg) saturate(0.4) brightness(0.65);
       mix-blend-mode: screen;
       opacity: 0.22;
       will-change: transform;
@@ -248,7 +248,7 @@
       font-size: 0.7rem;
       letter-spacing: 0.3em;
       text-transform: uppercase;
-      color: var(--gold);
+      color: var(--cream-dim);
       line-height: 1.0;
       margin-top: 4px;
       margin-bottom: 16px;
@@ -295,7 +295,7 @@
       pointer-events: none;
       background: radial-gradient(
         circle 52px at var(--nx, 50%) 50%,
-        rgba(201, 168, 76, 0.5) 0%,
+        rgba(245, 240, 232, 0.4) 0%,
         transparent 100%
       );
       filter: blur(18px);
