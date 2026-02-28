@@ -11,11 +11,11 @@
   <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter+Tight:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&display=swap" rel="stylesheet">
   <style>
     :root {
-      --sea-moss: #2d4a3a;
-      --aqua: #4a7c72;
-      --sand: #c8b89a;
-      --warm-white: #f0ebe3;
-      --dark-bg: #111a14;
+      --dark-bg:  #111a14;
+      --forest:   #1A4A2E;
+      --gold:     #C9A84C;
+      --cream:    #F5F0E8;
+      --sage:     #3D6B4A;
     }
 
     * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -55,11 +55,11 @@
       width: calc(100% - 40px);
       max-width: 1400px;
       padding: 12px 14px 12px 18px;
-      background: rgba(30, 46, 36, 0.25);
+      background: rgba(26, 74, 46, 0.25);
       backdrop-filter: blur(16px) saturate(1.4);
       -webkit-backdrop-filter: blur(16px) saturate(1.4);
       border-radius: 100px;
-      border: 1px solid rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(201, 168, 76, 0.18);
     }
 
     .navbar-left {
@@ -77,7 +77,7 @@
     .navbar-divider {
       width: 1px;
       height: 16px;
-      background: rgba(255, 255, 255, 0.18);
+      background: rgba(201, 168, 76, 0.3);
     }
 
     .navbar-name {
@@ -93,9 +93,9 @@
       display: inline-flex;
       align-items: center;
       padding: 9px 26px;
-      background: rgba(255, 255, 255, 0.1);
-      border: 1px solid rgba(255, 255, 255, 0.13);
-      color: #fff;
+      background: rgba(201, 168, 76, 0.08);
+      border: 1px solid rgba(201, 168, 76, 0.45);
+      color: var(--gold);
       border-radius: 100px;
       font-family: 'Inter Tight', sans-serif;
       font-weight: 500;
@@ -108,7 +108,7 @@
     }
 
     .navbar-contact:hover {
-      background: rgba(255, 255, 255, 0.18);
+      background: rgba(201, 168, 76, 0.18);
     }
 
     /* ─── CAROUSEL ─── */
@@ -182,7 +182,7 @@
       font-weight: 400;
       font-size: 18vw;
       line-height: 0.85;
-      color: #a0d4c2;
+      color: var(--gold);
       opacity: 1;
       padding-left: 48px;
       margin-top: -0.32em;
@@ -228,7 +228,7 @@
       background-image: url('images/course-sketch.jpg');
       background-size: cover;
       background-position: center center;
-      filter: invert(1) sepia(0.45) hue-rotate(115deg) saturate(0.5) brightness(0.72);
+      filter: invert(1) sepia(0.65) hue-rotate(18deg) saturate(0.75) brightness(0.62);
       mix-blend-mode: screen;
       opacity: 0.22;
       will-change: transform;
@@ -248,7 +248,7 @@
       font-size: 0.7rem;
       letter-spacing: 0.3em;
       text-transform: uppercase;
-      color: var(--aqua);
+      color: var(--gold);
       line-height: 1.0;
       margin-top: 4px;
       margin-bottom: 16px;
@@ -262,7 +262,7 @@
       font-size: clamp(2.4rem, 5vw, 4.6rem);
       line-height: 0.8;
       letter-spacing: -0.01em;
-      color: var(--warm-white);
+      color: var(--cream);
       max-width: 66vw;
       margin-bottom: 16px;
       opacity: 0;
@@ -274,7 +274,7 @@
       font-weight: 400;
       font-size: clamp(0.95rem, 1.3vw, 1.08rem);
       line-height: 1.0;
-      color: #a0d4c2;
+      color: rgba(245, 240, 232, 0.58);
       max-width: 400px;
       opacity: 0;
       animation: fadeIn 0.7s ease 0.6s forwards;
@@ -295,7 +295,7 @@
       pointer-events: none;
       background: radial-gradient(
         circle 52px at var(--nx, 50%) 50%,
-        rgba(200, 225, 210, 0.55) 0%,
+        rgba(201, 168, 76, 0.5) 0%,
         transparent 100%
       );
       filter: blur(18px);
